@@ -29,7 +29,7 @@
             <input
               type="date"
               name="duration-start"
-              min="2001-01-01"
+              min="2024-01-01"
               max="2049-01-01"
               required
             />
@@ -38,7 +38,7 @@
         <div class="date-duration__input_end">
           <label>
             Choose ending day:
-            <input type="date" name="duration-end" />
+            <input type="date" name="duration-end" min="2024-01-01" max="2049-01-01" disabled/>
           </label>
         </div>
       </div>
@@ -70,13 +70,13 @@
         </div>
       </div>
       <div>
-        <button id="result-button">Result</button>
+        <button class="result-button_days">Result</button>
       </div>
+    </div>
 
-      <div class="result-container">
+    <div class="container result-container">
         <span></span>
         <ul class="result-container__collection"></ul>
-      </div>
     </div>
 
     <div class="container tab2-container tabcontent">
@@ -99,7 +99,7 @@
         </div>
       </div>
       <div>
-        <button id="result-button">Result</button>
+        <button class="result-button_hollidays">Result</button>
       </div>
 
       <div class="result-container">

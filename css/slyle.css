@@ -35,6 +35,14 @@ h1 {
   gap: 15%;
   padding: 20px 0;
 }
+.result-container {
+  margin-top: 30px;
+  /* display: none; */
+}
+li {
+  list-style-type: none;
+  font-size: 22px;
+}
 button {
   border: none;
   outline: #ffeeffa1;
