@@ -25,10 +25,14 @@ const getDateFromInput = (input) => {
 
 const handleDateChoice = () => {
   const startDate = getDateFromInput(startDayInput);
+  const endDate = getDateFromInput(endDayInput);
 
   if (startDate) {
     endDayInput.disabled = false;
     endDayInput.min = startDate.toISOString().slice(0, 10);
+  }
+  if (endDate) {
+    startDayInput.max = endDate.toISOString().slice(0, 10);
   }
 };
 
