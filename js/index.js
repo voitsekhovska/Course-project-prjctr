@@ -34,12 +34,10 @@ const handleDateChoice = () => {
 
 // пресети
 
-const addPreset = (daysAmount) => {
-  const startDate = getDateFromInput(startDayInput);
-
-  if (startDate) {
-    let currentDate = new Date(startDate);
-    currentDate.setDate(startDate.getDate() + daysAmount);
+const addPreset = (date, daysAmount) => {
+  if (date) {
+    let currentDate = new Date(date);
+    currentDate.setDate(date.getDate() + daysAmount);
     endDayInput.value = currentDate.toISOString().slice(0, 10);
   }
 };
@@ -114,9 +112,9 @@ const init = () => {
 
 startDayInput.addEventListener("change", handleDateChoice);
 weekButtonPreset.addEventListener("click", () => {
-  addPreset(7);
+  addPreset(getDateFromInput(startDayInput),7);
 });
 monthButtonPreset.addEventListener("click", () => {
-  addPreset(30);
+  addPreset(getDateFromInput(startDayInput), 30);
 });
 resultButton.addEventListener("click", init);

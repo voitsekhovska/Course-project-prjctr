@@ -89,10 +89,6 @@ input[type="date"] {
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
-  background: transparent;
-  background-image: url("calendar-icon.png");
-  background-size: contain;
-  background-repeat: no-repeat;
   cursor: pointer;
 }
 
