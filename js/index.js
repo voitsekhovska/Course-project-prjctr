@@ -21,16 +21,20 @@ const getDateFromInput = (input) => {
   return isNaN(date.getTime()) ? null : date;
 };
 
-// перевірка кінцевої дати інпуту
+// перевірка min/max дат інпуту
 
-const handleDateChoice = () => {
+const handleStartDateChoice = () => {
   const startDate = getDateFromInput(startDayInput);
-  const endDate = getDateFromInput(endDayInput);
 
   if (startDate) {
     endDayInput.disabled = false;
     endDayInput.min = startDate.toISOString().slice(0, 10);
   }
+};
+
+const handleEndDateChoice = () => {
+  const endDate = getDateFromInput(endDayInput);
+
   if (endDate) {
     startDayInput.max = endDate.toISOString().slice(0, 10);
   }
@@ -114,7 +118,8 @@ const init = () => {
 
 // event listeners
 
-startDayInput.addEventListener("change", handleDateChoice);
+startDayInput.addEventListener("change", handleStartDateChoice);
+endDayInput.addEventListener("change", handleEndDateChoice);
 weekButtonPreset.addEventListener("click", () => {
   addPreset(getDateFromInput(startDayInput),7);
 });
