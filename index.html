@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Holidays</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/slyle.css"/>
+  </head>
+  <body>
+    <div class="title-container">
+    <h1>Holidays</h1>
+    </div>
+    <div id="tabs" class="container">
+      <button id="tab1-button">Interval</button>
+      <button id="tab2-button">Holidays</button>
+    </div>
+
+    <div class="container tab1-container tabcontent">
+      <div class="flex-container date-duration__input">
+        <div class="date-duration__input_start">
+          <label>
+            Choose start day:
+            <input
+              type="date"
+              name="duration-start"
+              required
+            />
+          </label>
+        </div>
+        <div class="date-duration__input_end">
+          <label>
+            Choose ending day:
+            <input type="date" name="duration-end" disabled/>
+          </label>
+        </div>
+      </div>
+      <div class="extensions-container">
+        <button class="extension_button-week">Week</button>
+        <button class="extension_button-month">Month</button>
+      </div>
+      <div class="flex-container selection-container">
+        <div class="selection-container__property">
+          <label>
+            Select a duration option:
+            <select name="date-specification">
+              <option value="period" selected>All days</option>
+              <option value="weekdays">All weekdays</option>
+              <option value="weekends">All weekends</option>
+            </select>
+          </label>
+        </div>
+        <div class="selection-container__property">
+          <label>
+            Select a dimension option:
+            <select name="dimension-specification">
+              <option value="days" selected>Calculate days</option>
+              <option value="hours">Calculate hours</option>
+              <option value="minutes">Calculate minutes</option>
+              <option value="seconds">Calculate seconds</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div>
+        <button class="result-button_days">Result</button>
+      </div>
+    </div>
+
+    <div class="container result-container">
+        <span></span>
+        <ul class="result-container__collection"></ul>
+    </div>
+
+    <div class="container tab2-container tabcontent">
+      <div class="flex-container selection-container">
+        <div class="selection-container__property">
+          <label>
+            Select a country:
+            <select name="country-specification">
+              <option value="country" selected>Ukraine</option>
+            </select>
+          </label>
+        </div>
+        <div class="selection-container__property">
+          <label>
+            Select a year:
+            <select name="year-specification">
+              <option value="first" selected>2024</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div>
+        <button class="result-button_hollidays">Result</button>
+      </div>
+
+      <div class="result-container">
+        <span></span>
+        <ul class="result-container__collection"></ul>
+      </div>
+    </div>
+    </div>
+
+    <script src="js/index.js"></script>
+  </body>
+</html>

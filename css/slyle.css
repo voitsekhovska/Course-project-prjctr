@@ -1,0 +1,101 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+body {
+  font-family: "Roboto Mono", monospace;
+  background: #f0ece2;
+}
+
+.title-container {
+  background: #596e79;
+  height: 150px;
+  padding: 50px;
+}
+h1 {
+  text-align: center;
+  font-size: 52px;
+  color: rgb(254, 247, 238);
+  font-family: "Rubik Mono One", monospace;
+  font-weight: 400;
+}
+
+.container {
+  width: 70%;
+  margin: 0 auto;
+  background-color: #dfd3c3;
+  padding: 30px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+}
+.flex-container {
+  display: flex;
+  align-items: center;
+  gap: 15%;
+  padding: 20px 0;
+}
+.result-container {
+  margin-top: 30px;
+  /* display: none; */
+}
+li {
+  list-style-type: none;
+  font-size: 22px;
+}
+button {
+  border: none;
+  outline: #ffeeffa1;
+  background: #364954;
+  color: #f9f7f7;
+  font-family: "Roboto Mono", monospace;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 7px;
+  width: 10%;
+  height: 45px;
+  margin-right: 35px;
+}
+button:hover {
+  background-color: #262c2f;
+}
+select {
+  font-family: "Roboto Mono", monospace;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #b6b6b6;
+  border-radius: 5px;
+  background-color: #efefed;
+}
+
+select:hover {
+  border-color: #999;
+}
+
+select:focus {
+  outline: none;
+  border-color: #555;
+}
+
+input[type="date"] {
+  font-family: "Roboto Mono", monospace;
+  width: 200px;
+  height: 40px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #efefed;
+  transition: border-color 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+}
+
+input[type="date"]:hover {
+  border-color: #999;
+}
+
+.tab2-container {
+  display: none;
+}
