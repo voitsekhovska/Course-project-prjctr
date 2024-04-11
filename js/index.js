@@ -7,10 +7,13 @@ const endDayInput = document.querySelector("[name='duration-end']");
 const dimensionSelect = document.querySelector(
   "[name='dimension-specification']"
 );
+const dateSelect = document.querySelector("[name='date-specification']");
 const resultButton = document.querySelector(".result-button_days");
 const weekButtonPreset = document.querySelector(".extension_button-week");
 const monthButtonPreset = document.querySelector(".extension_button-month");
 const resultList = document.querySelector(".result-container__collection");
+
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Date handling function
 
@@ -67,7 +70,7 @@ const countDaysInPeriod = (startDate, endDate, option) => {
         }
         break;
       case "weekends":
-        if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
+        if (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
           countResult++;
         }
         break;
@@ -81,8 +84,23 @@ const countDaysInPeriod = (startDate, endDate, option) => {
 
 // функція розрахунку проміжку між датами в імпуті
 
-const calculateDateInterval = (startDate, endDate, dimension) => {
-  let duration = Math.abs(endDate - startDate);
+const calculateDateInterval = (startDate, endDate, dimension, typeOfDays) => {
+  let duration;
+
+  switch (typeOfDays) {
+    case "weekdays":
+      duration =
+        countDaysInPeriod(startDate, endDate, "weekdays") *
+        MILLISECONDS_PER_DAY;
+      break;
+    case "weekends":
+      duration =
+        countDaysInPeriod(startDate, endDate, "weekends") *
+        MILLISECONDS_PER_DAY;
+      break;
+    default:
+      duration = Math.abs(endDate - startDate);
+  }
 
   switch (dimension) {
     case "seconds":
@@ -92,7 +110,7 @@ const calculateDateInterval = (startDate, endDate, dimension) => {
     case "hours":
       return `${duration / (1000 * 60 * 60)} ${dimension}`;
     case "days":
-      return `${duration / (1000 * 60 * 60 * 24)} ${dimension}`;
+      return `${duration / MILLISECONDS_PER_DAY} ${dimension}`;
     default:
       return null;
   }
@@ -127,7 +145,13 @@ const init = () => {
   const startDate = getDateFromInput(startDayInput);
   const endDate = getDateFromInput(endDayInput);
   const dimension = dimensionSelect.value;
-  const result = calculateDateInterval(startDate, endDate, dimension);
+  const selectedDateOption = dateSelect.value;
+  const result = calculateDateInterval(
+    startDate,
+    endDate,
+    dimension,
+    selectedDateOption
+  );
 
   addResultLi(startDate, endDate, result);
 };
@@ -143,3 +167,4 @@ monthButtonPreset.addEventListener("click", () => {
   addPreset(getDateFromInput(startDayInput), 30);
 });
 resultButton.addEventListener("click", init);
+
