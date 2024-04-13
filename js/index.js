@@ -7,10 +7,13 @@ const endDayInput = document.querySelector("[name='duration-end']");
 const dimensionSelect = document.querySelector(
   "[name='dimension-specification']"
 );
+const dateSelect = document.querySelector("[name='date-specification']");
 const resultButton = document.querySelector(".result-button_days");
 const weekButtonPreset = document.querySelector(".extension_button-week");
 const monthButtonPreset = document.querySelector(".extension_button-month");
 const resultList = document.querySelector(".result-container__collection");
+
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Date handling function
 
@@ -50,39 +53,54 @@ const addPreset = (date, daysAmount) => {
   }
 };
 
-// опції вибору юзера
+// опції вибору юзера: всі, вихідні, будні
 
-// const countDaysInPeriod = (startDate, endDate, option) => {
-//   let countResult = 0;
-//   let currentDate = new Date(startDate);
+const countDaysInPeriod = (startDate, endDate, option) => {
+  let countResult = 0;
+  let currentDate = new Date(startDate);
 
-//   while (currentDate <= endDate) {
-//     switch (option) {
-//       case "period":
-//         countResult++;
-//         break;
-//       case "weekdays":
-//         if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
-//           countResult++;
-//         }
-//         break;
-//       case "weekends":
-//         if (currentDate.getDay() == 0 || currentDate.getDay() == 6) {
-//           countResult++;
-//         }
-//         break;
-//       default:
-//         return null;
-//     }
-//     currentDate.setDate(currentDate.getDate() + 1);
-//   }
-//   return countResult;
-// };
+  while (currentDate <= endDate) {
+    switch (option) {
+      case "period":
+        countResult++;
+        break;
+      case "weekdays":
+        if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
+          countResult++;
+        }
+        break;
+      case "weekends":
+        if (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
+          countResult++;
+        }
+        break;
+      default:
+        return null;
+    }
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return countResult;
+};
 
-// функція розрахунку проміжку
+// функція розрахунку проміжку між датами в імпуті
 
-const calculateDateInterval = (startDate, endDate, dimension) => {
-  let duration = Math.abs(endDate - startDate);
+const calculateDateInterval = (startDate, endDate, dimension, typeOfDays) => {
+  let duration;
+
+  switch (typeOfDays) {
+    case "weekdays":
+      duration =
+        countDaysInPeriod(startDate, endDate, "weekdays") *
+        MILLISECONDS_PER_DAY;
+      break;
+    case "weekends":
+      duration =
+        countDaysInPeriod(startDate, endDate, "weekends") *
+        MILLISECONDS_PER_DAY;
+      break;
+    default:
+      duration = Math.abs(endDate - startDate);
+  }
 
   switch (dimension) {
     case "seconds":
@@ -92,17 +110,33 @@ const calculateDateInterval = (startDate, endDate, dimension) => {
     case "hours":
       return `${duration / (1000 * 60 * 60)} ${dimension}`;
     case "days":
-      return `${duration / (1000 * 60 * 60 * 24)} ${dimension}`;
+      return `${duration / MILLISECONDS_PER_DAY} ${dimension}`;
     default:
       return null;
   }
 };
 
-//
+// форматування дати
+
+const addLeadingZero = (number) => {
+  return number < 10 ? "0" + number : number;
+};
+
+const formattedDate = (date) => {
+  const day = addLeadingZero(date.getDate());
+  const month = addLeadingZero(date.getMonth() + 1);
+  const year = addLeadingZero(date.getFullYear());
+
+  return `${day}-${month}-${year}`;
+};
+
+// додавання результатів у список
 
 const addResultLi = (startDate, endDate, result) => {
   const li = document.createElement("li");
-  const formattedResult = `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}: ${result}`;
+  const formattedStartDate = formattedDate(startDate);
+  const formattedEndDate = formattedDate(endDate);
+  const formattedResult = `${formattedStartDate} - ${formattedEndDate}: ${result}`;
   li.textContent = formattedResult;
   resultList.appendChild(li);
 };
@@ -111,7 +145,13 @@ const init = () => {
   const startDate = getDateFromInput(startDayInput);
   const endDate = getDateFromInput(endDayInput);
   const dimension = dimensionSelect.value;
-  const result = calculateDateInterval(startDate, endDate, dimension);
+  const selectedDateOption = dateSelect.value;
+  const result = calculateDateInterval(
+    startDate,
+    endDate,
+    dimension,
+    selectedDateOption
+  );
 
   addResultLi(startDate, endDate, result);
 };
@@ -121,9 +161,10 @@ const init = () => {
 startDayInput.addEventListener("change", handleStartDateChoice);
 endDayInput.addEventListener("change", handleEndDateChoice);
 weekButtonPreset.addEventListener("click", () => {
-  addPreset(getDateFromInput(startDayInput),7);
+  addPreset(getDateFromInput(startDayInput), 7);
 });
 monthButtonPreset.addEventListener("click", () => {
   addPreset(getDateFromInput(startDayInput), 30);
 });
 resultButton.addEventListener("click", init);
+
