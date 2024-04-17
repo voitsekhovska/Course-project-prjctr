@@ -8,10 +8,10 @@ import { getResultFromStorage, saveResultToStorage } from "./storage.js";
 
 // DOM variables
 
-const tab1Button = document.getElementById("tab1-button");
-const tab2Button = document.getElementById("tab2-button");
-const tab1Content = document.querySelector(".tab1-container");
-const tab2Content = document.querySelector(".tab2-container");
+const dateTabButton = document.getElementById("tab1-button");
+const holidayTabButton = document.getElementById("tab2-button");
+const dateTabContent = document.querySelector(".tab1-container");
+const holidayTabContent = document.querySelector(".tab2-container");
 
 const startDayInput = document.querySelector("[name='duration-start']");
 const endDayInput = document.querySelector("[name='duration-end']");
@@ -47,7 +47,7 @@ function switchTab(
   hideTab(unselectedButton, unselectedContent);
 }
 
-switchTab(tab1Button, tab1Content, tab2Button, tab2Content);
+switchTab(dateTabButton, dateTabContent, holidayTabButton, holidayTabContent);
 
 // перевірка min/max дат інпуту
 
@@ -133,9 +133,9 @@ monthButtonPreset.addEventListener("click", () => {
   addPreset(getDateFromInput(startDayInput), 30);
 });
 resultButton.addEventListener("click", initInputResults);
-tab1Button.addEventListener("click", () => {
-  switchTab(tab1Button, tab1Content, tab2Button, tab2Content);
+dateTabButton.addEventListener("click", () => {
+  switchTab(dateTabButton, dateTabContent, holidayTabButton, holidayTabContent);
 });
-tab2Button.addEventListener("click", () => {
-  switchTab(tab2Button, tab2Content, tab1Button, tab1Content);
+holidayTabButton.addEventListener("click", () => {
+  switchTab(holidayTabButton, holidayTabContent, dateTabButton, dateTabContent);
 });
