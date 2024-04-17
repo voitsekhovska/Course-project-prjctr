@@ -4,17 +4,23 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Holidays</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/slyle.css"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/slyle.css" />
   </head>
   <body>
     <div class="title-container">
-    <h1>Holidays</h1>
+      <h1>Holidays</h1>
     </div>
     <div id="tabs" class="container">
       <button id="tab1-button">Interval</button>
@@ -26,17 +32,13 @@
         <div class="date-duration__input_start">
           <label>
             Choose start day:
-            <input
-              type="date"
-              name="duration-start"
-              required
-            />
+            <input type="date" name="duration-start" required />
           </label>
         </div>
         <div class="date-duration__input_end">
           <label>
             Choose ending day:
-            <input type="date" name="duration-end" disabled/>
+            <input type="date" name="duration-end" disabled />
           </label>
         </div>
       </div>
@@ -70,11 +72,11 @@
       <div>
         <button class="result-button_days">Result</button>
       </div>
-    </div>
-
-    <div class="container result-container">
-        <span></span>
+      <div class="gap-container"></div>
+      <div class="result-container">
+        <p class="result-title">Previous results</p>
         <ul class="result-container__collection"></ul>
+      </div>
     </div>
 
     <div class="container tab2-container tabcontent">
@@ -105,8 +107,7 @@
         <ul class="result-container__collection"></ul>
       </div>
     </div>
-    </div>
 
-    <script src="js/index.js"></script>
+    <script src="js/index.js" type="module"></script>
   </body>
 </html>

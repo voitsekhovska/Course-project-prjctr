@@ -1,6 +1,17 @@
-"use strict";
+import {
+  getDateFromInput,
+  calculateDateInterval,
+  formattedDate,
+} from "./date.js";
+
+import { getResultFromStorage, saveResultToStorage } from "./storage.js";
 
 // DOM variables
+
+const dateTabButton = document.getElementById("tab1-button");
+const holidayTabButton = document.getElementById("tab2-button");
+const dateTabContent = document.querySelector(".tab1-container");
+const holidayTabContent = document.querySelector(".tab2-container");
 
 const startDayInput = document.querySelector("[name='duration-start']");
 const endDayInput = document.querySelector("[name='duration-end']");
@@ -12,17 +23,31 @@ const resultButton = document.querySelector(".result-button_days");
 const weekButtonPreset = document.querySelector(".extension_button-week");
 const monthButtonPreset = document.querySelector(".extension_button-month");
 const resultList = document.querySelector(".result-container__collection");
+const resultContainer = document.querySelector(".result-container");
 
-const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+// переключення табів
 
-// Date handling function
+function showTab(tabButton, tabContent) {
+  tabButton.classList.add("active");
+  tabContent.style.display = "block";
+}
 
-const getDateFromInput = (input) => {
-  const dateValue = input.value;
-  if (!dateValue) return null;
-  const date = new Date(dateValue);
-  return isNaN(date.getTime()) ? null : date;
-};
+function hideTab(tabButton, tabContent) {
+  tabButton.classList.remove("active");
+  tabContent.style.display = "none";
+}
+
+function switchTab(
+  selectedButton,
+  selectedContent,
+  unselectedButton,
+  unselectedContent
+) {
+  showTab(selectedButton, selectedContent);
+  hideTab(unselectedButton, unselectedContent);
+}
+
+switchTab(dateTabButton, dateTabContent, holidayTabButton, holidayTabContent);
 
 // перевірка min/max дат інпуту
 
@@ -53,95 +78,22 @@ const addPreset = (date, daysAmount) => {
   }
 };
 
-// опції вибору юзера: всі, вихідні, будні
-
-const countDaysInPeriod = (startDate, endDate, option) => {
-  let countResult = 0;
-  let currentDate = new Date(startDate);
-
-  while (currentDate <= endDate) {
-    switch (option) {
-      case "period":
-        countResult++;
-        break;
-      case "weekdays":
-        if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
-          countResult++;
-        }
-        break;
-      case "weekends":
-        if (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
-          countResult++;
-        }
-        break;
-      default:
-        return null;
-    }
-    currentDate.setDate(currentDate.getDate() + 1);
-  }
-  return countResult;
-};
-
-// функція розрахунку проміжку між датами в імпуті
-
-const calculateDateInterval = (startDate, endDate, dimension, typeOfDays) => {
-  let duration;
-
-  switch (typeOfDays) {
-    case "weekdays":
-      duration =
-        countDaysInPeriod(startDate, endDate, "weekdays") *
-        MILLISECONDS_PER_DAY;
-      break;
-    case "weekends":
-      duration =
-        countDaysInPeriod(startDate, endDate, "weekends") *
-        MILLISECONDS_PER_DAY;
-      break;
-    default:
-      duration = Math.abs(endDate - startDate);
-  }
-
-  switch (dimension) {
-    case "seconds":
-      return `${duration / 1000} ${dimension}`;
-    case "minutes":
-      return `${duration / (1000 * 60)} ${dimension}`;
-    case "hours":
-      return `${duration / (1000 * 60 * 60)} ${dimension}`;
-    case "days":
-      return `${duration / MILLISECONDS_PER_DAY} ${dimension}`;
-    default:
-      return null;
-  }
-};
-
-// форматування дати
-
-const addLeadingZero = (number) => {
-  return number < 10 ? "0" + number : number;
-};
-
-const formattedDate = (date) => {
-  const day = addLeadingZero(date.getDate());
-  const month = addLeadingZero(date.getMonth() + 1);
-  const year = addLeadingZero(date.getFullYear());
-
-  return `${day}-${month}-${year}`;
-};
-
 // додавання результатів у список
 
 const addResultLi = (startDate, endDate, result) => {
   const li = document.createElement("li");
   const formattedStartDate = formattedDate(startDate);
   const formattedEndDate = formattedDate(endDate);
-  const formattedResult = `${formattedStartDate} - ${formattedEndDate}: ${result}`;
+  const formattedResult = `${formattedStartDate} - ${formattedEndDate} : ${result}`;
   li.textContent = formattedResult;
   resultList.appendChild(li);
+
+  saveResultToStorage(formattedResult);
 };
 
-const init = () => {
+const initInputResults = () => {
+  resultContainer.style.display = "block";
+
   const startDate = getDateFromInput(startDayInput);
   const endDate = getDateFromInput(endDayInput);
   const dimension = dimensionSelect.value;
@@ -152,9 +104,23 @@ const init = () => {
     dimension,
     selectedDateOption
   );
-
   addResultLi(startDate, endDate, result);
 };
+
+const initialization = (resultList, resultContainer) => {
+  const results = getResultFromStorage();
+
+  if (results.length > 0) {
+    results.forEach((result) => {
+      const li = document.createElement("li");
+      li.textContent = result;
+      resultList.appendChild(li);
+    });
+    resultContainer.style.display = "block";
+  }
+};
+
+initialization(resultList, resultContainer);
 
 // event listeners
 
@@ -166,5 +132,10 @@ weekButtonPreset.addEventListener("click", () => {
 monthButtonPreset.addEventListener("click", () => {
   addPreset(getDateFromInput(startDayInput), 30);
 });
-resultButton.addEventListener("click", init);
-
+resultButton.addEventListener("click", initInputResults);
+dateTabButton.addEventListener("click", () => {
+  switchTab(dateTabButton, dateTabContent, holidayTabButton, holidayTabContent);
+});
+holidayTabButton.addEventListener("click", () => {
+  switchTab(holidayTabButton, holidayTabContent, dateTabButton, dateTabContent);
+});

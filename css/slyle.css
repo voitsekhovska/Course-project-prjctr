@@ -13,6 +13,7 @@ body {
   height: 150px;
   padding: 50px;
 }
+
 h1 {
   text-align: center;
   font-size: 52px;
@@ -36,13 +37,24 @@ h1 {
   padding: 20px 0;
 }
 .result-container {
-  margin-top: 30px;
-  /* display: none; */
+  margin-top: 80px;
+  display: none;
 }
+.gap-container {
+  margin-top: 30px;
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: #f0ece2;
+}
+
 li {
   list-style-type: none;
   font-size: 22px;
 }
+
 button {
   border: none;
   outline: #ffeeffa1;
@@ -52,13 +64,30 @@ button {
   font-size: 16px;
   cursor: pointer;
   border-radius: 7px;
-  width: 10%;
+  width: 15%;
   height: 45px;
   margin-right: 35px;
 }
-button:hover {
-  background-color: #262c2f;
+button:hover,
+button:active {
+  background-color: #f9f7f7;
+  font-weight: 500;
+  color: #364954;
+  outline: 2px solid #364954;
 }
+button:active {
+  transform: translateY(1px);
+  filter: saturate(150%);
+}
+.active {
+  background-color: #f9f7f7;
+  font-weight: 500;
+  color: #364954;
+  outline: 2px solid #364954;
+  transform: translateY(1px);
+  filter: saturate(150%);
+}
+
 select {
   font-family: "Roboto Mono", monospace;
   padding: 10px;
@@ -67,11 +96,9 @@ select {
   border-radius: 5px;
   background-color: #efefed;
 }
-
 select:hover {
   border-color: #999;
 }
-
 select:focus {
   outline: none;
   border-color: #555;
@@ -91,11 +118,77 @@ input[type="date"] {
 input[type="date"]::-webkit-calendar-picker-indicator {
   cursor: pointer;
 }
-
 input[type="date"]:hover {
   border-color: #999;
 }
 
-.tab2-container {
-  display: none;
+.result-title {
+  text-align: center;
+  color: rgb(254, 247, 238);
+  font-family: "Rubik Mono One", monospace;
+  font-size: 30px;
+  font-weight: 400;
+  background: #c7b198;
+  height: 50px;
+  padding-top: 7px;
+  margin: 10px 0;
+}
+.result-container__collection {
+  margin: 0 30px;
+}
+.result-container__collection li {
+  padding: 5px 0;
+  border-bottom: 1px solid #fdfcfc;
+}
+.result-container__collection li:last-child {
+  border-bottom: none;
+}
+
+@media (max-width: 768px) {
+  .container, .extensions-container{ 
+    display: flex;
+    justify-content: space-between;
+    align-content: stretch;
+    flex-wrap: nowrap;
+  }
+  .flex-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+  .title-container {
+    height: 100px;
+    padding: 30px;
+  }
+  h1 {
+    font-size: 36px;
+  }
+  .container {
+    width: 90%;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  li {
+    font-size: 18px;
+  }
+  button {
+    font-size: 16px;
+    width: 35%;
+    height: 35px;
+  }
+  input[type="date"] {
+    font-size: 18px;
+  }
+  label{
+    font-size: 18px;
+  }
+  .result-title {
+    font-size: 20px;
+    padding-top: 15px;
+  }
+  li{
+    font-size: 16px;
+  }
+  .result-container__collection {
+    margin: 0 auto;
+  }
 }
