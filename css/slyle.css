@@ -64,7 +64,7 @@ button {
   font-size: 16px;
   cursor: pointer;
   border-radius: 7px;
-  width: 10%;
+  width: 15%;
   height: 45px;
   margin-right: 35px;
 }
@@ -76,6 +76,14 @@ button:active {
   outline: 2px solid #364954;
 }
 button:active {
+  transform: translateY(1px);
+  filter: saturate(150%);
+}
+.active {
+  background-color: #f9f7f7;
+  font-weight: 500;
+  color: #364954;
+  outline: 2px solid #364954;
   transform: translateY(1px);
   filter: saturate(150%);
 }
@@ -137,6 +145,16 @@ input[type="date"]:hover {
 }
 
 @media (max-width: 768px) {
+  .container, .extensions-container{ 
+    display: flex;
+    justify-content: space-between;
+    align-content: stretch;
+    flex-wrap: nowrap;
+  }
+  .flex-container {
+    flex-direction: column;
+    gap: 20px;
+  }
   .title-container {
     height: 100px;
     padding: 30px;
@@ -154,9 +172,9 @@ input[type="date"]:hover {
   }
   button {
     font-size: 16px;
-    width: 25%;
+    width: 35%;
     height: 35px;
-    margin-right: 35px;
+    /* margin-right: 35px; */
   }
   input[type="date"] {
     font-size: 18px;
@@ -165,7 +183,13 @@ input[type="date"]:hover {
     font-size: 18px;
   }
   .result-title {
-    font-size: 24px;
-    padding-top: 10px;
+    font-size: 20px;
+    padding-top: 15px;
+  }
+  li{
+    font-size: 16px;
+  }
+  .result-container__collection {
+    margin: 0 auto;
   }
 }
