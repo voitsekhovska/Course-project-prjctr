@@ -6,6 +6,8 @@ import {
 
 import { getResultFromStorage, saveResultToStorage } from "./storage.js";
 
+import { getCountriesList, getHolidaysList } from "./api.js";
+
 // DOM variables
 
 // for tab1
@@ -32,6 +34,7 @@ const countrySelect = document.querySelector(
 );
 const yearSelect = document.querySelector("select[name='year-specification']");
 const holidaysResultList = document.querySelector(".holidays-results");
+const holidaysResult = document.querySelector(".result-button_hollidays");
 
 // переключення табів
 
@@ -132,38 +135,14 @@ initialization(resultList, resultContainer);
 
 // tab2
 
-// API countries
-
-const API_KEY = "7RuItddOyyEXG36zJ9KfYXcTCyFdX4iX";
-
-const getCountriesList = async () => {
-  try {
-    const response = await fetch(
-      `https://calendarific.com/api/v2/countries?api_key=${API_KEY}`
-    );
-    const data = await response.json();
-
-    const countries = data.response.countries;
-    countries.forEach((country) => {
-      const countryOption = document.createElement("option");
-      countryOption.value = country.iso_alpha2;
-      countryOption.textContent = country.country_name;
-      countrySelect.appendChild(countryOption);
-    });
-
-    yearSelect.disabled = false;
-
-    fillYearsSelect();
-
-    if (!response.ok) {
-      throw new Error("Something went wrong!");
-    }
-  } catch (error) {
-    console.error("Error fetching countries. Please try again later.");
-  }
+const fillDataSelect = (countries) => {
+  countries.forEach((country) => {
+    const countryOption = document.createElement("option");
+    countryOption.value = country.iso_alpha2;
+    countryOption.textContent = country.country_name;
+    countrySelect.appendChild(countryOption);
+  });
 };
-
-// year select
 
 const fillYearsSelect = () => {
   const currentYear = new Date().getFullYear();
@@ -181,7 +160,39 @@ const fillYearsSelect = () => {
   }
 };
 
-// getCountriesList();
+const addHolidayList = (holidays) => {
+  holidays.forEach((holiday) => {
+    const holidayItem = document.createElement("li");
+    holidayItem.textContent = `${holiday.name}: ${holiday.date.iso}`;
+    holidaysResultList.append(holidayItem);
+  });
+};
+
+const handleChange = async () => {
+  const selectedCountry = countrySelect.value;
+  const selectedYear = yearSelect.value;
+
+  if (selectedCountry && selectedYear) {
+    try {
+      const holidays = await getHolidaysList(selectedCountry, selectedYear);
+      addHolidayList(holidays);
+      resultContainer.style.display = "block";
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+};
+
+const initHolidayTab = async () => {
+  try {
+    const countries = await getCountriesList();
+    fillDataSelect(countries);
+    fillYearsSelect();
+    handleChange();
+  } catch (error) {
+    console.error(error.message);
+  }
+};
 
 // event listeners
 
@@ -201,4 +212,8 @@ holidayTabButton.addEventListener("click", () => {
   switchTab(holidayTabButton, holidayTabContent, dateTabButton, dateTabContent);
 });
 
-countrySelect.addEventListener("change", getCountriesList);
+countrySelect.addEventListener("change", () => {
+  yearSelect.disabled = false;
+});
+holidayTabButton.addEventListener("click", initHolidayTab);
+holidaysResult.addEventListener("click", handleChange);
