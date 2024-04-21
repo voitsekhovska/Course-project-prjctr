@@ -25,7 +25,7 @@ const dateSelect = document.querySelector("[name='date-specification']");
 const resultButton = document.querySelector(".result-button_days");
 const weekButtonPreset = document.querySelector(".extension_button-week");
 const monthButtonPreset = document.querySelector(".extension_button-month");
-const resultList = document.querySelector(".result-container__collection");
+const resultList = document.querySelector(".days-result");
 const resultContainer = document.querySelector(".result-container");
 
 // for tab2
@@ -34,7 +34,7 @@ const countrySelect = document.querySelector(
 );
 const yearSelect = document.querySelector("select[name='year-specification']");
 const holidaysResultList = document.querySelector(".holidays-results");
-const holidaysResult = document.querySelector(".result-button_hollidays");
+const holidaysResult = document.querySelector(".result-button_holidays");
 
 // переключення табів
 
@@ -138,7 +138,7 @@ initialization(resultList, resultContainer);
 const fillDataSelect = (countries) => {
   countries.forEach((country) => {
     const countryOption = document.createElement("option");
-    countryOption.value = country.iso_alpha2;
+    countryOption.value = country["iso-3166"];
     countryOption.textContent = country.country_name;
     countrySelect.appendChild(countryOption);
   });
@@ -161,10 +161,17 @@ const fillYearsSelect = () => {
 };
 
 const addHolidayList = (holidays) => {
+  holidaysResultList.innerHTML = "";
+
   holidays.forEach((holiday) => {
+    const {
+      name,
+      date: { iso },
+    } = holiday;
     const holidayItem = document.createElement("li");
-    holidayItem.textContent = `${holiday.name}: ${holiday.date.iso}`;
-    holidaysResultList.append(holidayItem);
+    const formattedIso = formattedDate(new Date(iso.split("T")[0]));
+    holidayItem.textContent = `${formattedIso}: ${name}`;
+    holidaysResultList.appendChild(holidayItem);
   });
 };
 
@@ -172,14 +179,15 @@ const handleChange = async () => {
   const selectedCountry = countrySelect.value;
   const selectedYear = yearSelect.value;
 
-  if (selectedCountry && selectedYear) {
-    try {
-      const holidays = await getHolidaysList(selectedCountry, selectedYear);
-      addHolidayList(holidays);
-      resultContainer.style.display = "block";
-    } catch (error) {
-      console.error(error.message);
-    }
+  if (!selectedCountry || !selectedYear) {
+    return;
+  }
+
+  try {
+    const holidays = await getHolidaysList(selectedCountry, selectedYear);
+    addHolidayList(holidays);
+  } catch (error) {
+    console.error(error.message);
   }
 };
 
@@ -193,6 +201,7 @@ const initHolidayTab = async () => {
     console.error(error.message);
   }
 };
+
 
 // event listeners
 

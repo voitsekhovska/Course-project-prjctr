@@ -1,4 +1,3 @@
-
 const API_KEY = "7RuItddOyyEXG36zJ9KfYXcTCyFdX4iX";
 
 export const getCountriesList = async () => {
@@ -11,8 +10,10 @@ export const getCountriesList = async () => {
       throw new Error("Something went wrong!");
     }
 
-    const data = await response.json();
-    return data.response.countries;
+    const {
+      response: { countries },
+    } = await response.json();
+    return countries;
   } catch (error) {
     console.error("Error fetching countries. Please try again later.");
   }
@@ -21,15 +22,17 @@ export const getCountriesList = async () => {
 export const getHolidaysList = async (country, year) => {
   try {
     const response = await fetch(
-      `https://calendarific.com/api/v2/holidays?&api_key=${API_KEY}&country=${country}&year=${year}&`
+      `https://calendarific.com/api/v2/holidays?api_key=${API_KEY}&country=${country}&year=${year}`
     );
 
     if (!response.ok) {
       throw new Error("Something went wrong!");
     }
 
-    const data = await response.json();
-    return data.response.holidays;
+    const {
+      response: { holidays },
+    } = await response.json();
+    return holidays;
   } catch (error) {
     console.error("Error fetching holidays. Please try again later.");
   }

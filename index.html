@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Holidays</title>
-    <link type="image/png" sizes="32x32" rel="icon" href="image/favicon.png">
+    <link type="image/png" sizes="32x32" rel="icon" href="image/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -76,7 +76,7 @@
       <div class="gap-container"></div>
       <div class="result-container">
         <p class="result-title">Previous results</p>
-        <ul class="result-container__collection"></ul>
+        <ul class="days-result result-container__collection"></ul>
       </div>
     </div>
 
@@ -93,17 +93,16 @@
         <div class="selection-container__property">
           <label>
             Select a year:
-            <select name="year-specification" disabled>
-            </select>
+            <select name="year-specification" disabled></select>
           </label>
         </div>
       </div>
       <div>
-        <button class="result-button_hollidays">Result</button>
+        <button class="result-button_holidays">Result</button>
       </div>
-
+      <div class="gap-container"></div>
       <div class="result-container">
-        <p>List of holidays</p>
+        <p class="result-title">List of holidays</p>
         <ul class="holidays-results result-container__collection"></ul>
       </div>
     </div>
