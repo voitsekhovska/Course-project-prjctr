@@ -146,6 +146,17 @@ input[type="date"]:hover {
 .result-container__collection li:last-child {
   border-bottom: none;
 }
+.error-message {
+  background-color: rgba(255, 6, 6, 0.437);
+  color: rgb(254, 247, 238);
+  font-size: 28px;
+  height: 80px;
+  align-content: center;
+  text-align: center;
+  margin-top: 30px;
+  width: 70%;
+  margin: 0 auto;
+}
 
 @media (max-width: 768px) {
   .container, .extensions-container{ 
@@ -170,6 +181,10 @@ input[type="date"]:hover {
     padding: 20px;
     margin-bottom: 20px;
   }
+  .error-message {
+  font-size: 22px;
+  width: 90%;
+}
   li {
     font-size: 18px;
   }

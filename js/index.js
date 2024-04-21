@@ -8,6 +8,8 @@ import { getResultFromStorage, saveResultToStorage } from "./storage.js";
 
 import { getCountriesList, getHolidaysList } from "./api.js";
 
+import { displayErrorMessage } from "./alert.js";
+
 // DOM variables
 
 // for tab1
@@ -175,7 +177,7 @@ const addHolidayList = (holidays) => {
   });
 };
 
-const handleChange = async () => {
+const getHolidaysResults = async () => {
   const selectedCountry = countrySelect.value;
   const selectedYear = yearSelect.value;
 
@@ -187,18 +189,22 @@ const handleChange = async () => {
     const holidays = await getHolidaysList(selectedCountry, selectedYear);
     addHolidayList(holidays);
   } catch (error) {
-    console.error(error.message);
+    displayErrorMessage(error.message);
   }
 };
+
+const handleCountryChange = () => {
+  yearSelect.disabled = false;
+}
 
 const initHolidayTab = async () => {
   try {
     const countries = await getCountriesList();
     fillDataSelect(countries);
     fillYearsSelect();
-    handleChange();
+    getHolidaysResults();
   } catch (error) {
-    console.error(error.message);
+    displayErrorMessage(error.message);
   }
 };
 
@@ -221,8 +227,6 @@ holidayTabButton.addEventListener("click", () => {
   switchTab(holidayTabButton, holidayTabContent, dateTabButton, dateTabContent);
 });
 
-countrySelect.addEventListener("change", () => {
-  yearSelect.disabled = false;
-});
+countrySelect.addEventListener("change", handleCountryChange);
 holidayTabButton.addEventListener("click", initHolidayTab);
-holidaysResult.addEventListener("click", handleChange);
+holidaysResult.addEventListener("click", getHolidaysResults);
