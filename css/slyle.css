@@ -52,7 +52,13 @@ h1 {
   right: 0;
   background: #f0ece2;
 }
-
+.sort-container {
+  display: flex;
+  justify-content: flex-start;
+}
+.ascending-button, .descending-button {
+  cursor: pointer;
+}
 li {
   list-style-type: none;
   font-size: 22px;

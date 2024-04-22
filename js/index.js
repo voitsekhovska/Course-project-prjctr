@@ -37,6 +37,8 @@ const countrySelect = document.querySelector(
 const yearSelect = document.querySelector("select[name='year-specification']");
 const holidaysResultList = document.querySelector(".holidays-results");
 const holidaysResult = document.querySelector(".result-button_holidays");
+const sortAscendingBtn = document.querySelector(".ascending-button");
+const sortDescendingBtn = document.querySelector(".descending-button");
 
 // переключення табів
 
@@ -165,17 +167,45 @@ const fillYearsSelect = () => {
 const addHolidayList = (holidays) => {
   holidaysResultList.innerHTML = "";
 
-  holidays.forEach((holiday) => {
-    const {
-      name,
-      date: { iso },
-    } = holiday;
-    const holidayItem = document.createElement("li");
-    const formattedIso = formattedDate(new Date(iso.split("T")[0]));
-    holidayItem.textContent = `${formattedIso}: ${name}`;
-    holidaysResultList.appendChild(holidayItem);
+  if (!holidays || holidays.length === 0) {
+    const noHolidayItem = document.createElement("li");
+    noHolidayItem.textContent =
+      "No holiday found for a selected country and year. Please try another option.";
+    holidaysResultList.appendChild(noHolidayItem);
+  } else {
+    holidays.forEach((holiday) => {
+      const {
+        name,
+        date: { iso },
+      } = holiday;
+      const holidayItem = document.createElement("li");
+      const formattedIso = formattedDate(new Date(iso.split("T")[0]));
+      holidayItem.textContent = `${formattedIso}: ${name}`;
+      holidaysResultList.appendChild(holidayItem);
+    });
+  }
+};
+
+const sortHolidaysAscending = () => {
+  const holidayItems = Array.from(holidaysResultList.children);
+  const reversedHolidays = holidayItems.reverse();
+  holidaysResultList.innerHTML = "";
+
+  reversedHolidays.forEach((holiday) => {
+    holidaysResultList.appendChild(holiday);
   });
 };
+
+const sortHolidaysDescending = () => {
+  const holidayItems = Array.from(holidaysResultList.children);
+  const reversedHolidays = holidayItems.reverse();
+  holidaysResultList.innerHTML = "";
+
+  reversedHolidays.forEach((holiday) => {
+    holidaysResultList.appendChild(holiday);
+  });
+};
+
 
 const getHolidaysResults = async () => {
   const selectedCountry = countrySelect.value;
@@ -195,7 +225,7 @@ const getHolidaysResults = async () => {
 
 const handleCountryChange = () => {
   yearSelect.disabled = false;
-}
+};
 
 const initHolidayTab = async () => {
   try {
@@ -207,7 +237,6 @@ const initHolidayTab = async () => {
     displayErrorMessage(error.message);
   }
 };
-
 
 // event listeners
 
@@ -230,3 +259,5 @@ holidayTabButton.addEventListener("click", () => {
 countrySelect.addEventListener("change", handleCountryChange);
 holidayTabButton.addEventListener("click", initHolidayTab);
 holidaysResult.addEventListener("click", getHolidaysResults);
+sortAscendingBtn.addEventListener("click", sortHolidaysAscending);
+sortDescendingBtn.addEventListener("click", sortHolidaysDescending);
