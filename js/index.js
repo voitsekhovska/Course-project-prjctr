@@ -6,8 +6,13 @@ import {
 
 import { getResultFromStorage, saveResultToStorage } from "./storage.js";
 
+import { getCountriesList, getHolidaysList } from "./api.js";
+
+import { displayErrorMessage } from "./alert.js";
+
 // DOM variables
 
+// for tab1
 const dateTabButton = document.getElementById("tab1-button");
 const holidayTabButton = document.getElementById("tab2-button");
 const dateTabContent = document.querySelector(".tab1-container");
@@ -22,8 +27,17 @@ const dateSelect = document.querySelector("[name='date-specification']");
 const resultButton = document.querySelector(".result-button_days");
 const weekButtonPreset = document.querySelector(".extension_button-week");
 const monthButtonPreset = document.querySelector(".extension_button-month");
-const resultList = document.querySelector(".result-container__collection");
+const resultList = document.querySelector(".days-result");
 const resultContainer = document.querySelector(".result-container");
+
+// for tab2
+const countrySelect = document.querySelector(
+  "select[name='country-specification']"
+);
+const yearSelect = document.querySelector("select[name='year-specification']");
+const holidaysResultList = document.querySelector(".holidays-results");
+const holidaysResult = document.querySelector(".result-button_holidays");
+const sortButton = document.querySelector(".sort-button");
 
 // переключення табів
 
@@ -122,6 +136,96 @@ const initialization = (resultList, resultContainer) => {
 
 initialization(resultList, resultContainer);
 
+// tab2
+
+const fillDataSelect = (countries) => {
+  countries.forEach((country) => {
+    const countryOption = document.createElement("option");
+    countryOption.value = country["iso-3166"];
+    countryOption.textContent = country.country_name;
+    countrySelect.appendChild(countryOption);
+  });
+};
+
+const fillYearsSelect = () => {
+  const currentYear = new Date().getFullYear();
+
+  for (let i = 2001; i <= 2049; i++) {
+    const yearOption = document.createElement("option");
+    yearOption.value = i;
+    yearOption.textContent = i;
+
+    if (i === currentYear) {
+      yearOption.selected = true;
+    }
+
+    yearSelect.appendChild(yearOption);
+  }
+};
+
+const addHolidayList = (holidays) => {
+  holidaysResultList.innerHTML = "";
+
+  if (!holidays || holidays.length === 0) {
+    const noHolidayItem = document.createElement("li");
+    noHolidayItem.textContent =
+      "No holiday found for a selected country and year. Please try another option.";
+    holidaysResultList.appendChild(noHolidayItem);
+  } else {
+    holidays.forEach((holiday) => {
+      const {
+        name,
+        date: { iso },
+      } = holiday;
+      const holidayItem = document.createElement("li");
+      const formattedIso = formattedDate(new Date(iso.split("T")[0]));
+      holidayItem.textContent = `${formattedIso}: ${name}`;
+      holidaysResultList.appendChild(holidayItem);
+    });
+  }
+};
+
+const sortHolidays = () => {
+  const holidayItems = Array.from(holidaysResultList.children);
+  const reversedHolidays = holidayItems.reverse();
+  holidaysResultList.innerHTML = "";
+
+  reversedHolidays.forEach((holiday) => {
+    holidaysResultList.appendChild(holiday);
+  });
+};
+
+const getHolidaysResults = async () => {
+  const selectedCountry = countrySelect.value;
+  const selectedYear = yearSelect.value;
+
+  if (!selectedCountry || !selectedYear) {
+    return;
+  }
+
+  try {
+    const holidays = await getHolidaysList(selectedCountry, selectedYear);
+    addHolidayList(holidays);
+  } catch (error) {
+    displayErrorMessage(error.message);
+  }
+};
+
+const handleCountryChange = () => {
+  yearSelect.disabled = false;
+};
+
+const initHolidayTab = async () => {
+  try {
+    const countries = await getCountriesList();
+    fillDataSelect(countries);
+    fillYearsSelect();
+    getHolidaysResults();
+  } catch (error) {
+    displayErrorMessage(error.message);
+  }
+};
+
 // event listeners
 
 startDayInput.addEventListener("change", handleStartDateChoice);
@@ -139,3 +243,8 @@ dateTabButton.addEventListener("click", () => {
 holidayTabButton.addEventListener("click", () => {
   switchTab(holidayTabButton, holidayTabContent, dateTabButton, dateTabContent);
 });
+
+countrySelect.addEventListener("change", handleCountryChange);
+holidayTabButton.addEventListener("click", initHolidayTab);
+holidaysResult.addEventListener("click", getHolidaysResults);
+sortButton.addEventListener("click", sortHolidays);

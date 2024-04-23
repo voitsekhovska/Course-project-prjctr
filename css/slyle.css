@@ -40,6 +40,9 @@ h1 {
   margin-top: 80px;
   display: none;
 }
+.tab2-container .result-container {
+  display: block;
+}
 .gap-container {
   margin-top: 30px;
   width: 100%;
@@ -49,7 +52,15 @@ h1 {
   right: 0;
   background: #f0ece2;
 }
-
+.sort-container {
+  display: flex;
+  justify-content: flex-start;
+}
+.sort-button {
+  cursor: pointer;
+  font-size: 30px;
+  outline: 2px solid #364954;
+}
 li {
   list-style-type: none;
   font-size: 22px;
@@ -143,9 +154,21 @@ input[type="date"]:hover {
 .result-container__collection li:last-child {
   border-bottom: none;
 }
+.error-message {
+  background-color: rgba(255, 6, 6, 0.437);
+  color: rgb(254, 247, 238);
+  font-size: 28px;
+  height: 80px;
+  align-content: center;
+  text-align: center;
+  margin-top: 30px;
+  width: 70%;
+  margin: 0 auto;
+}
 
 @media (max-width: 768px) {
-  .container, .extensions-container{ 
+  .container,
+  .extensions-container {
     display: flex;
     justify-content: space-between;
     align-content: stretch;
@@ -167,6 +190,10 @@ input[type="date"]:hover {
     padding: 20px;
     margin-bottom: 20px;
   }
+  .error-message {
+    font-size: 22px;
+    width: 90%;
+  }
   li {
     font-size: 18px;
   }
@@ -178,14 +205,21 @@ input[type="date"]:hover {
   input[type="date"] {
     font-size: 18px;
   }
-  label{
+  label {
     font-size: 18px;
+  }
+  select[name="country-specification"] {
+    width: 240px;
+  }
+  .sort-button {
+    font-size: 22px;
+    outline: 1px solid #364954;
   }
   .result-title {
     font-size: 20px;
     padding-top: 15px;
   }
-  li{
+  li {
     font-size: 16px;
   }
   .result-container__collection {
