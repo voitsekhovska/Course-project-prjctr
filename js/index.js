@@ -37,8 +37,7 @@ const countrySelect = document.querySelector(
 const yearSelect = document.querySelector("select[name='year-specification']");
 const holidaysResultList = document.querySelector(".holidays-results");
 const holidaysResult = document.querySelector(".result-button_holidays");
-const sortAscendingBtn = document.querySelector(".ascending-button");
-const sortDescendingBtn = document.querySelector(".descending-button");
+const sortButton = document.querySelector(".sort-button");
 
 // переключення табів
 
@@ -186,7 +185,7 @@ const addHolidayList = (holidays) => {
   }
 };
 
-const sortHolidaysAscending = () => {
+const sortHolidays = () => {
   const holidayItems = Array.from(holidaysResultList.children);
   const reversedHolidays = holidayItems.reverse();
   holidaysResultList.innerHTML = "";
@@ -195,17 +194,6 @@ const sortHolidaysAscending = () => {
     holidaysResultList.appendChild(holiday);
   });
 };
-
-const sortHolidaysDescending = () => {
-  const holidayItems = Array.from(holidaysResultList.children);
-  const reversedHolidays = holidayItems.reverse();
-  holidaysResultList.innerHTML = "";
-
-  reversedHolidays.forEach((holiday) => {
-    holidaysResultList.appendChild(holiday);
-  });
-};
-
 
 const getHolidaysResults = async () => {
   const selectedCountry = countrySelect.value;
@@ -259,5 +247,4 @@ holidayTabButton.addEventListener("click", () => {
 countrySelect.addEventListener("change", handleCountryChange);
 holidayTabButton.addEventListener("click", initHolidayTab);
 holidaysResult.addEventListener("click", getHolidaysResults);
-sortAscendingBtn.addEventListener("click", sortHolidaysAscending);
-sortDescendingBtn.addEventListener("click", sortHolidaysDescending);
+sortButton.addEventListener("click", sortHolidays);
