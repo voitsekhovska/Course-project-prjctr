@@ -1,4 +1,4 @@
-const API_KEY = "7RuItddOyyEXG36zJ9KfYXcTCyFdX4iX";
+const API_KEY = "4qiEoqwhYnDJiBROD0qns29pGO2QYzUI";
 const API_URL = "https://calendarific.com/api/v2/";
 
 export const getCountriesList = async () => {
